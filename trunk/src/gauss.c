@@ -9,11 +9,26 @@
  */
 int eliminate( Matrix *mat, Matrix *b){
     int k, j, n, i;
+	int maxelem;
     double d;
     n=mat->r;
 
     for(k = 0; k < n; k++){
-       
+        maxelem=k;
+        for(j = k + 1; j < n; j++) {
+            if (fabs(mat->data[maxelem][k]) < fabs(mat->data[j][k])) {
+                maxelem = j;
+            }
+        }
+        if (maxelem != k) {
+            double *tmp = mat->data[k];
+            mat->data[k] = mat->data[maxelem];
+            mat->data[maxelem] = tmp;
+
+            double *btmp = b->data[k];
+            b->data[k] = b->data[maxelem];
+            b->data[maxelem] = btmp;
+        }
         for(j = k + 1; j < n; j++){
             if(mat->data[k][k] == 0){
                 return 1;
