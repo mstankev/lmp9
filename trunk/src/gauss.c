@@ -16,7 +16,7 @@ int eliminate( Matrix *mat, Matrix *b){
     for(i = 0; i < n; i++){
         max_elem=i;
         for(j = i + 1; j < n; j++) {
-            if (fabs(mat->data[max_elem][i]) < fabs(mat->data[j][i])) {
+            if (abs(mat->data[max_elem][i]) < abs(mat->data[j][i])) {
                 max_elem = j;
             }
         }
