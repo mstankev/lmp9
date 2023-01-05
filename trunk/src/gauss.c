@@ -9,36 +9,38 @@
  */
 int eliminate( Matrix *mat, Matrix *b){
     int k, j, n, i;
-	int maxelem;
-    double d;
+
+    int max_elem;
+    double m;
     n=mat->r;
 
-    for(k = 0; k < n; k++){
-        maxelem=k;
-        for(j = k + 1; j < n; j++) {
-            if (fabs(mat->data[maxelem][k]) < fabs(mat->data[j][k])) {
-                maxelem = j;
+    for(i = 0; i < n; i++){
+        max_elem=i;
+        for(j = i + 1; j < n; j++) {
+            if (abs(mat->data[max_elem][i]) < abs(mat->data[j][i])) {
+                max_elem = j;
             }
         }
-        if (maxelem != k) {
-            double *tmp = mat->data[k];
-            mat->data[k] = mat->data[maxelem];
-            mat->data[maxelem] = tmp;
+        if (max_elem != i) {
+            double *tmp = mat->data[i];
+            mat->data[i] = mat->data[max_elem];
+            mat->data[max_elem] = tmp;
 
-            double *btmp = b->data[k];
-            b->data[k] = b->data[maxelem];
-            b->data[maxelem] = btmp;
+            double *b_tmp = b->data[i];
+            b->data[i] = b->data[max_elem];
+            b->data[max_elem] = b_tmp;
         }
-        for(j = k + 1; j < n; j++){
-            if(mat->data[k][k] == 0){
+        for(j = i + 1; j < n; j++){
+            if(mat->data[i][i] == 0){
+
                 return 1;
             }
 
-            d = mat->data[j][k] / mat->data[k][k];
-            for(i = k; i < n; i++){
-                mat->data[j][i] = mat->data[j][i] -d * (mat->data[k][i]);
+            m = mat->data[j][i] / mat->data[i][i];
+            for(k = i; k < n; k++){
+                mat->data[j][k] = mat->data[j][k] -m * (mat->data[i][k]);
             }
-            b->data[j][0] = b->data[j][0] - d * (b->data[k][0]);
+            b->data[j][0] = b->data[j][0] - m * (b->data[i][0]);
         }
     }
 
